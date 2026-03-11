@@ -18,6 +18,11 @@
     <i class="bi bi-building"></i> Empresa
     </a>
 </li>
+<li>
+<a href="/clientes">
+<i class="bi bi-people"></i> Clientes
+</a>
+</li>
 <li><a href="#"><i class="bi bi-gear"></i><span>Configuración</span></a></li>
 </ul>
 </aside>

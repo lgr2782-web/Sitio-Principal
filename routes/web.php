@@ -3,6 +3,7 @@
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\UsuarioController;
+use App\Http\Controllers\ClienteController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', fn () => redirect()->route('login'));
@@ -38,3 +39,7 @@ Route::get('/empresa', function () {
 Route::get('/empresas', function () {
     return view('empresa.listado');
 })->name('empresas');
+
+
+
+Route::get('/clientes', [ClienteController::class, 'index'])->name('clientes');
