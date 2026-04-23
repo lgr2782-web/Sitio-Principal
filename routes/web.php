@@ -4,6 +4,8 @@ use App\Http\Controllers\AuthController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\UsuarioController;
 use App\Http\Controllers\ClienteController;
+use App\Http\Controllers\ProductoController;
+use App\Http\Controllers\InventarioController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', fn () => redirect()->route('login'));
@@ -42,4 +44,12 @@ Route::get('/empresas', function () {
 
 
 
+Route::get('/productos', [ProductoController::class, 'index'])
+    ->middleware('auth.api')
+    ->name('productos');
+
 Route::get('/clientes', [ClienteController::class, 'index'])->name('clientes');
+
+Route::get('/inventario', [InventarioController::class, 'index'])
+    ->middleware('auth.api')
+    ->name('inventario');

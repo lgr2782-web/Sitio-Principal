@@ -23,6 +23,17 @@
 <i class="bi bi-people"></i> Clientes
 </a>
 </li>
+<li>
+<a href="/productos">
+<i class="bi bi-folder"></i> Productos
+</a>
+</li>
+<li class="nav-item">
+    <a href="{{ route('inventario') }}" class="nav-link">
+        <i class="bi bi-box-seam"></i>
+        <span>Inventario</span>
+    </a>
+</li>
 <li><a href="#"><i class="bi bi-gear"></i><span>Configuración</span></a></li>
 </ul>
 </aside>
