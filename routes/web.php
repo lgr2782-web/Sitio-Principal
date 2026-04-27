@@ -7,6 +7,8 @@ use App\Http\Controllers\ClienteController;
 use App\Http\Controllers\ProductoController;
 use App\Http\Controllers\InventarioController;
 use Illuminate\Support\Facades\Route;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Session;
 
 Route::get('/', fn () => redirect()->route('login'));
 
@@ -53,3 +55,18 @@ Route::get('/clientes', [ClienteController::class, 'index'])->name('clientes');
 Route::get('/inventario', [InventarioController::class, 'index'])
     ->middleware('auth.api')
     ->name('inventario');
+
+Route::post('/actualizar-token', function (Request $request) {
+
+    Session::put('accessToken', $request->accessToken);
+    Session::put('tokenExpire', time() + $request->exp);
+
+    Session::save();
+
+    return response()->json([
+        'ok' => true,
+        'token' => Session::get('accessToken'),
+        'expire' => Session::get('tokenExpire')
+    ]);
+
+})->name('actualizar.token');

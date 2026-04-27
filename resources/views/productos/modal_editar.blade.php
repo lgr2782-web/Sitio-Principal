@@ -15,6 +15,7 @@
 <input id="edit_codigo" class="form-control mb-2" placeholder="Código">
 <input id="edit_descripcion" class="form-control mb-2" placeholder="Descripción">
 <input id="edit_precio" type="number" class="form-control mb-2" placeholder="Precio">
+<input id="edit_stock_minimo" type="number" class="form-control mb-2" placeholder="Stock Minimo">
 
 </div>
 
@@ -29,42 +30,43 @@
 <script>
     async function actualizar(){
 
-try{
+        try{
 
-const id = document.getElementById("edit_id").value;
+        const id = document.getElementById("edit_id").value;
 
-await axios.put(`${API_URL}/productos/${id}`,{
+        await axios.put(`${API_URL}/productos/${id}`,{
 
-codigo:document.getElementById("edit_codigo").value,
-descripcion:document.getElementById("edit_descripcion").value,
-precio_unitario:document.getElementById("edit_precio").value,
-tipo:"P",
-exento:false
+        codigo:document.getElementById("edit_codigo").value,
+        descripcion:document.getElementById("edit_descripcion").value,
+        precio_unitario:document.getElementById("edit_precio").value,
+        stock_minimo:document.getElementById("edit_stock_minimo").value,
+        tipo:"P",
+        exento:false
 
-},{
-headers:{ Authorization:`Bearer ${token}` }
-});
+        },{
+        headers:{ Authorization:`Bearer ${token}` }
+        });
 
-// refrescar tabla
-tabla.ajax.reload(null,false);
+        // refrescar tabla
+        tabla.ajax.reload(null,false);
 
-// cerrar modal
-const modal = bootstrap.Modal.getInstance(document.getElementById('modalEditar'));
-modal.hide();
+        // cerrar modal
+        const modal = bootstrap.Modal.getInstance(document.getElementById('modalEditar'));
+        modal.hide();
 
-// limpiar fondo oscuro
-document.querySelectorAll('.modal-backdrop').forEach(el => el.remove());
-document.body.classList.remove('modal-open');
+        // limpiar fondo oscuro
+        document.querySelectorAll('.modal-backdrop').forEach(el => el.remove());
+        document.body.classList.remove('modal-open');
 
-// mensaje
-Swal.fire("Actualizado","Producto actualizado","success");
+        // mensaje
+        Swal.fire("Actualizado","Producto actualizado","success");
 
-}catch(err){
+        }catch(err){
 
-console.error(err);
-Swal.fire("Error","No se pudo actualizar","error");
+        console.error(err);
+        Swal.fire("Error","No se pudo actualizar","error");
 
-}
+        }
 
 }
 </script>

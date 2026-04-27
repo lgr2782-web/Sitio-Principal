@@ -45,9 +45,10 @@ document.getElementById('sidebar').classList.toggle('collapsed');
 </script>
 <script>
 
-    window.API_URL = "{{ env('API_URL') }}";
-    window.token = "{{ session('accessToken') }}";
-    window.tokenExpire = {{ session('tokenExpire') ?? 0 }};
+        window.API_URL = "{{ env('API_URL') }}";
+        window.token = "{{ session('accessToken') }}";
+        window.tokenExpire = {{ session('tokenExpire') ?? 0 }};
+        window.refreshToken = "{{ session('refreshToken') }}";
 
 </script>
 
@@ -55,78 +56,82 @@ document.getElementById('sidebar').classList.toggle('collapsed');
 
 function iniciarControlSesion(){
 
-if(!window.tokenExpire) return;
+    if(!window.tokenExpire) return;
 
-const ahora = Math.floor(Date.now()/1000);
-const tiempoRestante = window.tokenExpire - ahora;
+    const ahora = Math.floor(Date.now()/1000);
+    const tiempoRestante = window.tokenExpire - ahora;
 
-console.log("Segundos restantes:", tiempoRestante);
+    console.log("Segundos restantes:", tiempoRestante);
 
 /* Mostrar alerta 10 segundos antes */
 
-if(tiempoRestante > 10){
+    if(tiempoRestante > 10){
 
-setTimeout(mostrarAviso,(tiempoRestante-10)*1000);
+        setTimeout(mostrarAviso,(tiempoRestante-10)*1000);
 
-}else{
+    }else{
 
-mostrarAviso();
+        mostrarAviso();
+
+    }
 
 }
-
-}
-
-
 
 function mostrarAviso(){
 
-Swal.fire({
+        Swal.fire({
+            title:'Sesión por expirar',
+            text:'Tu sesión termina en 10 segundos ¿deseas continuar?',
+            icon:'warning',
+            showCancelButton:true,
+            confirmButtonText:'Renovar sesión',
+            cancelButtonText:'Cerrar sesión',
+            allowOutsideClick:false
+        }).then((result)=>{
 
-title:'Sesión por expirar',
-text:'Tu sesión termina en 10 segundos ¿deseas continuar?',
-icon:'warning',
-showCancelButton:true,
-confirmButtonText:'Renovar sesión',
-cancelButtonText:'Cerrar sesión',
-allowOutsideClick:false
+        if(result.isConfirmed){
 
-}).then((result)=>{
+            renovarToken();
 
-if(result.isConfirmed){
+        }else{
 
-renovarToken();
+            cerrarSesion();
 
-}else{
-
-cerrarSesion();
-
-}
+        }
 
 })
 
 }
 
+async function renovarToken() {
+    try {
 
+        const res = await axios.post(`${API_URL}/auth/refresh`, {
+            refreshToken: window.refreshToken
+        });
 
-async function renovarToken(){
+        const guardar = await axios.post("{{ route('actualizar.token') }}", {
+            accessToken: res.data.accessToken,
+            exp: res.data.exp
+        }, {
+            headers: {
+                "X-CSRF-TOKEN": "{{ csrf_token() }}"
+            }
+        });
 
-try{
+        Swal.fire({
+            title: 'Sesión renovada',
+            text: 'Tu sesión continúa activa.',
+            icon: 'success',
+            timer: 1500,
+            showConfirmButton: false
+        }).then(() => {
+            window.location.reload();
+        });
 
-const res = await axios.post(`${API_URL}/auth/refresh`,{},{
-
-headers:{ Authorization:`Bearer ${window.token}` },
-withCredentials:true
-
-});
-
-location.reload();
-
-}catch(error){
-
-cerrarSesion();
-
-}
-
+    } catch (error) {
+      cerrarSesion();
+    }
 }
 
 function cerrarSesion(){

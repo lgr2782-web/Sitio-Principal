@@ -13,6 +13,7 @@
 <input id="codigo" class="form-control mb-2" placeholder="Código">
 <input id="descripcion" class="form-control mb-2" placeholder="Descripción">
 <input id="precio" type="number" class="form-control mb-2" placeholder="Precio">
+<input id="stock_minimo" type="number" class="form-control mb-2" placeholder="Stock Minimo">
 
 </div>
 
@@ -31,11 +32,12 @@ async function guardar(){
 try{
 
 const data = {
-codigo:document.getElementById("codigo").value,
-descripcion:document.getElementById("descripcion").value,
-precio_unitario:document.getElementById("precio").value,
-tipo:"P",
-exento:false
+    codigo:document.getElementById("codigo").value,
+    descripcion:document.getElementById("descripcion").value,
+    precio_unitario:document.getElementById("precio").value,
+    stock_minimo:document.getElementById("stock_minimo").value,
+    tipo:"P",
+    exento:false
 };
 
 await axios.post(`${API_URL}/productos`, data, {
@@ -49,6 +51,7 @@ tabla.ajax.reload(null,false);
 document.getElementById("codigo").value="";
 document.getElementById("descripcion").value="";
 document.getElementById("precio").value="";
+document.getElementById("stock_minimo").value="";
 
 // ✅ cerrar modal correctamente
 const modalElement = document.getElementById('modalProducto');
@@ -61,10 +64,10 @@ document.body.classList.remove('modal-open');
 
 // ✅ mostrar mensaje (DESPUÉS de cerrar)
 Swal.fire({
-icon:"success",
-title:"Producto creado",
-timer:1500,
-showConfirmButton:false
+    icon:"success",
+    title:"Producto creado",
+    timer:1500,
+    showConfirmButton:false
 });
 
 }catch(err){
@@ -72,9 +75,9 @@ showConfirmButton:false
 console.error(err);
 
 Swal.fire({
-icon:"error",
-title:"Error",
-text:"No se pudo guardar"
+    icon:"error",
+    title:"Error",
+    text:"No se pudo guardar"
 });
 
 }

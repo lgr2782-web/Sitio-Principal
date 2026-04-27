@@ -60,7 +60,7 @@ return "₡ " + Number(data).toLocaleString();
 }
 },
 
-// 👇 STOCK (aunque no venga)
+// 
 {
 data:"stock",
 render:(data)=>{
@@ -68,18 +68,18 @@ return Number(data).toLocaleString();
 }
 },
 
-// 👇 ACCIONES
+//
 {
 data:null,
 render:(data)=>{
 return `
-<button class="btn btn-warning btn-sm" onclick='editar(${JSON.stringify(data)})'>
-<i class="bi bi-pencil"></i>
-</button>
+        <button class="btn btn-warning btn-sm" onclick='editar(${JSON.stringify(data)})'>
+        <i class="bi bi-pencil"></i>
+        </button>
 
-<button class="btn btn-danger btn-sm" onclick='eliminar(${data.id_producto})'>
-<i class="bi bi-trash"></i>
-</button>
+        <button class="btn btn-danger btn-sm" onclick='eliminar(${data.id_producto})'>
+        <i class="bi bi-trash"></i>
+        </button>
 `;
 }
 }
@@ -97,6 +97,7 @@ document.getElementById("edit_id").value = producto.id_producto;
 document.getElementById("edit_codigo").value = producto.codigo;
 document.getElementById("edit_descripcion").value = producto.descripcion;
 document.getElementById("edit_precio").value = producto.precio_unitario;
+document.getElementById("edit_stock_minimo").value = producto.stock_minimo;
 
 // abrir modal
 new bootstrap.Modal(document.getElementById('modalEditar')).show();
@@ -126,10 +127,10 @@ headers:{ Authorization:`Bearer ${token}` }
 tabla.ajax.reload(null,false);
 
 Swal.fire({
-icon:"success",
-title:"Eliminado",
-timer:1500,
-showConfirmButton:false
+    icon:"success",
+    title:"Eliminado",
+    timer:1500,
+    showConfirmButton:false
 });
 
 }catch(err){
@@ -137,9 +138,9 @@ showConfirmButton:false
 console.error(err);
 
 Swal.fire({
-icon:"error",
-title:"Error",
-text:"No se pudo eliminar"
+    icon:"error",
+    title:"Error",
+    text:"No se pudo eliminar"
 });
 
 }
