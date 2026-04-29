@@ -34,6 +34,12 @@
         <span>Inventario</span>
     </a>
 </li>
+<li class="nav-item">
+    <a href="{{ route('facturas') }}" class="nav-link">
+        <i class="bi bi-basket"></i>
+        <span>Facturas</span>
+    </a>
+</li>
 <li><a href="#"><i class="bi bi-gear"></i><span>Configuración</span></a></li>
 </ul>
 </aside>

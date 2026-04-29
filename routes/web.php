@@ -9,6 +9,7 @@ use App\Http\Controllers\InventarioController;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Session;
+use App\Http\Controllers\FacturaController;
 
 Route::get('/', fn () => redirect()->route('login'));
 
@@ -44,8 +45,6 @@ Route::get('/empresas', function () {
     return view('empresa.listado');
 })->name('empresas');
 
-
-
 Route::get('/productos', [ProductoController::class, 'index'])
     ->middleware('auth.api')
     ->name('productos');
@@ -70,3 +69,17 @@ Route::post('/actualizar-token', function (Request $request) {
     ]);
 
 })->name('actualizar.token');
+
+Route::get('/facturas', [FacturaController::class, 'index'])
+    ->middleware('auth.api')
+    ->name('facturas');
+
+Route::post('/facturas', [FacturaController::class, 'store'])
+    ->middleware('auth.api')
+    ->name('facturas.store');
+
+Route::get('/facturas/clientes', [FacturaController::class, 'clientes'])
+    ->middleware('auth.api');
+
+Route::get('/facturas/productos', [FacturaController::class, 'productos'])
+    ->middleware('auth.api');
